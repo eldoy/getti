@@ -1,0 +1,14 @@
+{
+  "name": "downloader",
+  "version": "0.1.0",
+  "description": "Downloader",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eldoy/downloader"
+  },
+  "license": "MIT"
+}
