@@ -1,22 +1,9 @@
 var os = require('os')
 var dugg = require('dugg')()
-var { run } = require('extras')
+var { run, print } = require('extras')
 var jsonstrom = require('jsonstrom')
 var csvstrom = require('csvstrom')
 var { URL } = require('url')
-
-function print(str) {
-  if (typeof str == 'object') {
-    str = JSON.stringify(str)
-  }
-  if (process.env.NODE_ENV == 'production') {
-    console.info(`${str}`)
-  } else {
-    process.stdout.clearLine()
-    process.stdout.cursorTo(0)
-    process.stdout.write(`${str}`)
-  }
-}
 
 function mapType(str) {
   if (str.includes('json')) return 'json'

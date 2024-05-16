@@ -14,7 +14,7 @@
   "dependencies": {
     "csvstrom": "^0.1.5",
     "dugg": "^0.4.0",
-    "extras": "^0.12.1",
+    "extras": "^0.12.2",
     "jsonstrom": "^0.1.0"
   },
   "devDependencies": {
