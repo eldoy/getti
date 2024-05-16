@@ -90,13 +90,14 @@ module.exports = async function download(input, callback) {
     }
   }
 
-  if (type == 'csv') {
+  if (type.includes('csv')) {
     console.info(`Converting CSV to JSON...`)
     console.time('CSV convert:')
-    const { count } = await csvstrom(path)
+    const { count } = await csvstrom(filename)
     console.timeEnd('CSV convert:')
     console.info(`Converted ${count} rows of CSV to JSON`)
-    filename = path.replace(/\.csv$/, '.json')
+    run(`rm ${filename}`)
+    filename = filename.replace(/\.csv$/, '.json')
   }
 
   console.info('Processing data...')
@@ -104,6 +105,7 @@ module.exports = async function download(input, callback) {
 
   var data = []
   var count = 0
+
   try {
     var stream = await jsonstrom(filename, async function ({ value }) {
       var result = callback ? callback(value) : value
