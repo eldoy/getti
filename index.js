@@ -23,7 +23,9 @@ function mapType(str) {
   if (str.includes('csv')) return 'csv'
 }
 
-function getParams(url) {
+function getParams(url, type) {
+  if (type) return { url: url.href, type }
+
   var types = url.pathname.split('.')
 
   if (types.length == 2) {
@@ -36,7 +38,7 @@ function getParams(url) {
     types = ['', 'gz']
   }
 
-  return { url: url.href, type: types.join('.') }
+  return { url: url.href, type: types.join('.') || 'json' }
 }
 
 function parseInput(input) {
@@ -46,12 +48,16 @@ function parseInput(input) {
   } else if (typeof input == 'object') {
     url = new URL(input.url)
   }
-  return getParams(url)
+  return getParams(url, input.type)
 }
 
-module.exports = async function load(input, options) {
+module.exports = async function load(input, callback) {
   if (!input || !['string', 'object'].includes(typeof input)) {
     throw new TypeError('Invalid URL')
+  }
+
+  if (typeof callback != 'undefined' && typeof callback != 'function') {
+    throw new TypeError('Invalid parameter: callback must be a function')
   }
 
   var { url, type } = parseInput(input)
@@ -59,8 +65,6 @@ module.exports = async function load(input, options) {
   if (!url) {
     throw new TypeError('Invalid URL')
   }
-
-  var { output, cb } = { output: true, ...options }
 
   var date = Date.now()
   var path = `${os.tmpdir()}/${date}.${type}`
@@ -96,15 +100,14 @@ module.exports = async function load(input, options) {
   }
 
   console.info('Processing data...')
-
   console.time('Processed data')
 
-  var result = []
+  var data = []
   var count = 0
   try {
     var stream = await jsonstrom(filename, async function ({ value }) {
-      var r = cb ? cb(value) : value
-      if (output && r) result.push(r)
+      var result = callback ? callback(value) : value
+      if (typeof result != 'undefined') data.push(result)
       if (count % 10000 == 0) {
         print(count)
       }
@@ -121,5 +124,5 @@ module.exports = async function load(input, options) {
 
   run(`rm ${filename}`)
 
-  if (output) return result
+  if (data.length) return data
 }

@@ -42,14 +42,21 @@ it('invalid string url object, throws error', async ({ t, $ }) => {
   await t.rejects(async () => await $.load(input), new TypeError('Invalid URL'))
 })
 
-it('string url, returns results', async ({ t, $ }) => {
+it('invalid callback, throws error', async ({ t, $ }) => {
+  await t.rejects(
+    async () => await $.load('abc', {}),
+    new TypeError('Invalid parameter: callback must be a function')
+  )
+})
+
+it('valid url, returns results', async ({ t, $ }) => {
   var input = 'https://7ino.s3.amazonaws.com/json-sample-sdjfru.json'
   var r = await $.load(input)
   t.ok(r.length == 2)
 })
 
-it('string url + output=false, does not return results', async ({ t, $ }) => {
+it('valid url + non returning callback, does not return', async ({ t, $ }) => {
   var input = 'https://7ino.s3.amazonaws.com/json-sample-sdjfru.json'
-  var r = await $.load(input, { output: false })
+  var r = await $.load(input, () => {})
   t.ok(!r)
 })
