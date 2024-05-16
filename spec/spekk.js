@@ -1,4 +1,4 @@
-var load = require('../index')
+var download = require('../index')
 
 module.exports = async function () {
   async function before() {}
@@ -6,7 +6,7 @@ module.exports = async function () {
   async function after() {}
 
   var $ = {
-    load,
+    download,
     params: {},
     app: {
       config: {

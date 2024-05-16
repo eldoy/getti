@@ -51,7 +51,7 @@ function parseInput(input) {
   return getParams(url, input.type)
 }
 
-module.exports = async function load(input, callback) {
+module.exports = async function download(input, callback) {
   if (!input || !['string', 'object'].includes(typeof input)) {
     throw new TypeError('Invalid URL')
   }
