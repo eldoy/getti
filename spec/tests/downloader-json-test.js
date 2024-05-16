@@ -1,10 +1,10 @@
 var sample = require('../samples/json-sample.json')
 
 var endpoints = {
-  sample: 'https://7ino.s3.amazonaws.com/json-sample-sdjfru.',
-  sampleGz: 'https://7ino.s3.amazonaws.com/json-sample-gz-sdknw6.',
-  sampleJson: 'https://7ino.s3.amazonaws.com/json-sample-sdjfru.json',
-  sampleJsonGz: 'https://7ino.s3.amazonaws.com/json-sample.json-sdjfru.gz'
+  sample: 'http://localhost:9090/json-sample',
+  sampleGz: 'http://localhost:9090/json-sample-gz',
+  sampleJson: 'http://localhost:9090/json-sample.json',
+  sampleJsonGz: 'http://localhost:9090/json-sample.json.gz'
 }
 
 var cb = (v) => ({ id: v.organisasjonsnummer, name: v.navn })

@@ -1,10 +1,10 @@
 var sample = require('../samples/csv-sample.json')
 
 var endpoints = {
-  sample: 'https://7ino.s3.amazonaws.com/csv-sample-sdkov6.',
-  sampleGz: 'https://7ino.s3.amazonaws.com/csv-sample-gz-sdkov6.',
-  sampleCsv: 'https://7ino.s3.amazonaws.com/csv-sample-sdkov6.csv',
-  sampleCsvGz: 'https://7ino.s3.amazonaws.com/csv-sample.csv-sdkov6.gz'
+  sample: 'http://localhost:9090/csv-sample',
+  sampleGz: 'http://localhost:9090/csv-sample-gz',
+  sampleCsv: 'http://localhost:9090/csv-sample.csv',
+  sampleCsvGz: 'http://localhost:9090/csv-sample.csv.gz'
 }
 
 var cb = (v) => ({ id: v.organisasjonsnummer, name: v.navn })

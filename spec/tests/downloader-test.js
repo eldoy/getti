@@ -74,13 +74,13 @@ it('invalid callback, throws error', async ({ t, $ }) => {
 })
 
 it('valid url, returns results', async ({ t, $ }) => {
-  var input = 'https://7ino.s3.amazonaws.com/json-sample-sdjfru.json'
+  var input = 'http://localhost:9090/json-sample.json'
   var r = await $.download(input)
   t.ok(r.length == 2)
 })
 
 it('valid url + non returning callback, does not return', async ({ t, $ }) => {
-  var input = 'https://7ino.s3.amazonaws.com/json-sample-sdjfru.json'
+  var input = 'http://localhost:9090/json-sample.json'
   var r = await $.download(input, () => {})
   t.ok(!r)
 })
