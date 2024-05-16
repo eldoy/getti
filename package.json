@@ -1,21 +1,23 @@
 {
-  "name": "downloader",
+  "name": "getti",
   "version": "0.1.0",
-  "description": "Downloader",
+  "description": "Getti downloader",
   "main": "index.js",
   "scripts": {
     "test": "nodemon -q --exec spekk"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eldoy/downloader"
+    "url": "https://github.com/eldoy/getti"
   },
   "license": "MIT",
   "dependencies": {
     "csvstrom": "^0.1.5",
     "dugg": "^0.4.0",
     "extras": "^0.12.1",
-    "jsonstrom": "^0.1.0",
+    "jsonstrom": "^0.1.0"
+  },
+  "devDependencies": {
     "spekk": "^0.2.2"
   }
 }
