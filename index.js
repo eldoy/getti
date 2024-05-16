@@ -1,8 +1,8 @@
-const os = require('os')
-const dugg = require('dugg')()
-const { run } = require('extras')
-const jsonstrom = require('jsonstrom')
-const csvstrom = require('csvstrom')
+var os = require('os')
+var dugg = require('dugg')()
+var { run } = require('extras')
+var jsonstrom = require('jsonstrom')
+var csvstrom = require('csvstrom')
 var { URL } = require('url')
 
 function print(str) {
@@ -51,7 +51,7 @@ function parseInput(input) {
   return getParams(url, input.type)
 }
 
-module.exports = async function download(input, callback) {
+module.exports = async function (input, callback) {
   if (!input || !['string', 'object'].includes(typeof input)) {
     throw new TypeError('Invalid URL')
   }
@@ -93,7 +93,7 @@ module.exports = async function download(input, callback) {
   if (type.includes('csv')) {
     console.info(`Converting CSV to JSON...`)
     console.time('CSV convert:')
-    const { count } = await csvstrom(filename)
+    var { count } = await csvstrom(filename)
     console.timeEnd('CSV convert:')
     console.info(`Converted ${count} rows of CSV to JSON`)
     run(`rm ${filename}`)
