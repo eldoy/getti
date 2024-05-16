@@ -1,1 +1,2 @@
 - Review scenarios where downloaded files are not removed afterwards
+- Review JSON format after CSV conversion
