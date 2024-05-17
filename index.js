@@ -31,7 +31,7 @@ function quiet() {
   }
 }
 
-async function download(options, callback) {
+module.exports = async function download(options, callback) {
   // process input
   if (typeof options != 'object') {
     options = { url: options }
@@ -111,9 +111,4 @@ async function download(options, callback) {
   log.info(`${count}/${stream.count} entries loaded.`)
 
   if (data.length) return data
-}
-
-module.exports = function (config) {
-  config && !!config.quiet && quiet()
-  return download
 }

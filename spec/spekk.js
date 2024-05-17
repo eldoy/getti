@@ -1,4 +1,4 @@
-var download = require('../index')({ quiet: true })
+var getti = require('../index')
 
 module.exports = async function () {
   async function before() {}
@@ -6,7 +6,7 @@ module.exports = async function () {
   async function after() {}
 
   var $ = {
-    download,
+    getti,
     params: {},
     app: {
       config: {

@@ -12,52 +12,52 @@ var cb = (v) => ({ id: v.organisasjonsnummer, name: v.navn })
 // sample.csv - string input
 it('sample.csv string, returns sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsv
-  var r = await $.download(url)
+  var r = await $.getti(url)
   t.deepStrictEqual(r, sample)
 })
 
 it('sample.csv string + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsv
-  var r = await $.download(url, cb)
+  var r = await $.getti(url, cb)
   t.deepStrictEqual(r, sample.map(cb))
 })
 
 // sample.csv - object inputn
 it('sample.csv object, returns sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsv
-  var r = await $.download({ url })
+  var r = await $.getti({ url })
   t.deepEqual(r, sample)
 })
 
 it('sample.csv object + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsv
-  var r = await $.download({ url }, cb)
+  var r = await $.getti({ url }, cb)
   t.deepEqual(r, sample.map(cb))
 })
 
 // sample.csv.gz - string input
 it('sample.csv.gz string, returns sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsvGz
-  var r = await $.download(url)
+  var r = await $.getti(url)
   t.deepEqual(r, sample)
 })
 
 it('sample.csv.gz string + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsvGz
-  var r = await $.download(url, cb)
+  var r = await $.getti(url, cb)
   t.deepEqual(r, sample.map(cb))
 })
 
 // sample.csv.gz - object input
 it('sample.csv.gz object, returns sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsvGz
-  var r = await $.download({ url })
+  var r = await $.getti({ url })
   t.deepEqual(r, sample)
 })
 
 it('sample.csv.gz object + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sampleCsvGz
-  var r = await $.download({ url }, cb)
+  var r = await $.getti({ url }, cb)
   t.deepEqual(r, sample.map(cb))
 })
 
@@ -65,7 +65,7 @@ it('sample.csv.gz object + cb, returns mapped sample', async ({ t, $ }) => {
 it('sample string, returns sample', async ({ t, $ }) => {
   var url = endpoints.sample
   await t.rejects(
-    async () => await $.download(url),
+    async () => await $.getti(url),
     new TypeError('Undefined file type')
   )
 })
@@ -73,7 +73,7 @@ it('sample string, returns sample', async ({ t, $ }) => {
 it('sample string + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sample
   await t.rejects(
-    async () => await $.download(url),
+    async () => await $.getti(url),
     new TypeError('Undefined file type')
   )
 })
@@ -81,13 +81,13 @@ it('sample string + cb, returns mapped sample', async ({ t, $ }) => {
 // sample - object input
 it('sample object, returns sample', async ({ t, $ }) => {
   var url = endpoints.sample
-  var r = await $.download({ url, type: 'csv' })
+  var r = await $.getti({ url, type: 'csv' })
   t.deepEqual(r, sample)
 })
 
 it('sample object + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sample
-  var r = await $.download({ url, type: 'csv' }, cb)
+  var r = await $.getti({ url, type: 'csv' }, cb)
   t.deepEqual(r, sample.map(cb))
 })
 
@@ -95,7 +95,7 @@ it('sample object + cb, returns mapped sample', async ({ t, $ }) => {
 it('sample-gz string, throws error', async ({ t, $ }) => {
   var url = endpoints.sampleGz
   await t.rejects(
-    async () => await $.download(url),
+    async () => await $.getti(url),
     new TypeError('Undefined file type')
   )
 })
@@ -103,7 +103,7 @@ it('sample-gz string, throws error', async ({ t, $ }) => {
 it('sample-gz string + cb, throws error', async ({ t, $ }) => {
   var url = endpoints.sampleGz
   await t.rejects(
-    async () => await $.download(url, cb),
+    async () => await $.getti(url, cb),
     new TypeError('Undefined file type')
   )
 })
@@ -111,12 +111,12 @@ it('sample-gz string + cb, throws error', async ({ t, $ }) => {
 // sample-gz - object input
 it('sample-gz object + type, returns sample', async ({ t, $ }) => {
   var url = endpoints.sampleGz
-  var r = await $.download({ url, type: 'csv.gz' })
+  var r = await $.getti({ url, type: 'csv.gz' })
   t.deepEqual(r, sample)
 })
 
 it('sample-gz object + type + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sampleGz
-  var r = await $.download({ url, type: 'csv.gz' }, cb)
+  var r = await $.getti({ url, type: 'csv.gz' }, cb)
   t.deepEqual(r, sample.map(cb))
 })
