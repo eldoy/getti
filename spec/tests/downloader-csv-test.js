@@ -66,7 +66,7 @@ it('sample string, returns sample', async ({ t, $ }) => {
   var url = endpoints.sample
   await t.rejects(
     async () => await $.download(url),
-    new Error('Parser cannot parse input: expected a value')
+    new TypeError('Undefined file type')
   )
 })
 
@@ -74,7 +74,7 @@ it('sample string + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sample
   await t.rejects(
     async () => await $.download(url),
-    new Error('Parser cannot parse input: expected a value')
+    new TypeError('Undefined file type')
   )
 })
 
@@ -96,7 +96,7 @@ it('sample-gz string, throws error', async ({ t, $ }) => {
   var url = endpoints.sampleGz
   await t.rejects(
     async () => await $.download(url),
-    new Error('Parser cannot parse input: expected a value')
+    new TypeError('Undefined file type')
   )
 })
 
@@ -104,7 +104,7 @@ it('sample-gz string + cb, throws error', async ({ t, $ }) => {
   var url = endpoints.sampleGz
   await t.rejects(
     async () => await $.download(url, cb),
-    new Error('Parser cannot parse input: expected a value')
+    new TypeError('Undefined file type')
   )
 })
 

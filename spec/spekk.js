@@ -1,4 +1,4 @@
-var download = require('../index')
+var download = require('../index')({ quiet: true })
 
 module.exports = async function () {
   async function before() {}

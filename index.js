@@ -4,60 +4,39 @@ var { run, print } = require('extras')
 var jsonstrom = require('jsonstrom')
 var csvstrom = require('csvstrom')
 var { URL } = require('url')
+var getType = require('./lib/getType')
 
-function mapType(str) {
-  if (str.includes('json')) return 'json'
-  if (str.includes('csv')) return 'csv'
+function quiet() {
+  console.info = () => {}
+  console.time = () => {}
+  console.timeEnd = () => {}
+  print = () => {}
+  dugg.download = async function (url, path, opts) {
+    return require('dugg')().download(url, path, { ...opts, quiet: true })
+  }
 }
 
-function getParams(url, type) {
-  if (type) return { url: url.href, type }
-
-  var types = url.pathname.split('.')
-
-  if (types.length == 2) {
-    types = [types.at(-1)]
-  } else if (types.length > 2) {
-    types = [mapType(types.at(-2)), types.at(-1)]
+async function download(options, callback) {
+  if (typeof options != 'object') {
+    options = { url: options }
   }
 
-  if (types.length == 1 && types.includes('gz')) {
-    types = ['', 'gz']
-  }
+  options.quiet && quiet()
 
-  return { url: url.href, type: types.join('.') || 'json' }
-}
+  var url = new URL(options.url)
+  var type = options.type || getType(url)
 
-function parseInput(input) {
-  var url
-  if (typeof input == 'string') {
-    url = new URL(input)
-  } else if (typeof input == 'object') {
-    url = new URL(input.url)
-  }
-  return getParams(url, input.type)
-}
+  if (!type) throw new TypeError('Undefined file type')
 
-module.exports = async function (input, callback) {
-  if (!input || !['string', 'object'].includes(typeof input)) {
-    throw new TypeError('Invalid URL')
-  }
-
-  if (typeof callback != 'undefined' && typeof callback != 'function') {
-    throw new TypeError('Invalid parameter: callback must be a function')
-  }
-
-  var { url, type } = parseInput(input)
-
-  if (!url) {
-    throw new TypeError('Invalid URL')
+  if (!['undefined', 'function'].includes(typeof callback)) {
+    throw new TypeError('Callback must be a function')
   }
 
   var date = Date.now()
   var path = `${os.tmpdir()}/${date}.${type}`
   console.info(`Downloading file to: ${path}`)
 
-  var res = await dugg.download(url, path)
+  var res = await dugg.download(url.href, path, { quiet: options.quiet })
 
   if (res.downloaded != res.total) {
     run(`rm ${path}`)
@@ -114,4 +93,9 @@ module.exports = async function (input, callback) {
   run(`rm ${filename}`)
 
   if (data.length) return data
+}
+
+module.exports = function (config) {
+  config && !!config.quiet && quiet()
+  return download
 }

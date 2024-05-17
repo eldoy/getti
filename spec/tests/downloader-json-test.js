@@ -62,28 +62,32 @@ it('sample.json.gz object + cb, returns mapped sample', async ({ t, $ }) => {
 })
 
 // sample - string input
-it('sample string, returns sample', async ({ t, $ }) => {
+it('sample string, throws error', async ({ t, $ }) => {
   var url = endpoints.sample
-  var r = await $.download(url)
-  t.deepEqual(r, sample)
+  await t.rejects(
+    async () => await $.download(url),
+    new TypeError('Undefined file type')
+  )
 })
 
-it('sample string + cb, returns mapped sample', async ({ t, $ }) => {
+it('sample string + cb, throws error', async ({ t, $ }) => {
   var url = endpoints.sample
-  var r = await $.download(url, cb)
-  t.deepEqual(r, sample.map(cb))
+  await t.rejects(
+    async () => await $.download(url, cb),
+    new TypeError('Undefined file type')
+  )
 })
 
 // sample - object input
 it('sample object, returns sample', async ({ t, $ }) => {
   var url = endpoints.sample
-  var r = await $.download({ url })
+  var r = await $.download({ url, type: 'json' })
   t.deepEqual(r, sample)
 })
 
 it('sample object + cb, returns mapped sample', async ({ t, $ }) => {
   var url = endpoints.sample
-  var r = await $.download({ url }, cb)
+  var r = await $.download({ url, type: 'json' }, cb)
   t.deepEqual(r, sample.map(cb))
 })
 
@@ -92,7 +96,7 @@ it('sample-gz string, throws error', async ({ t, $ }) => {
   var url = endpoints.sampleGz
   await t.rejects(
     async () => await $.download(url),
-    new Error('Parser cannot parse input: expected a value')
+    new TypeError('Undefined file type')
   )
 })
 
@@ -100,7 +104,7 @@ it('sample-gz string + cb, throws error', async ({ t, $ }) => {
   var url = endpoints.sampleGz
   await t.rejects(
     async () => await $.download(url, cb),
-    new Error('Parser cannot parse input: expected a value')
+    new TypeError('Undefined file type')
   )
 })
 
