@@ -1,5 +1,7 @@
 var getti = require('../index')
 
+process.env.GETTI_OPTIONS_QUIET = 1
+
 module.exports = async function () {
   async function before() {}
 
