@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "csvstrom": "^0.1.5",
+    "csvstrom": "^0.2.0",
     "dugg": "^0.4.0",
     "extras": "^0.12.2",
     "jsonstrom": "^0.1.0"
