@@ -24,31 +24,29 @@ module.exports = async function getti(options, callback) {
 
   // Download file
   var date = Date.now()
-  var path = `${os.tmpdir()}/${date}.${type}`
+  var filename = `${os.tmpdir()}/${date}.${type}`
 
   if (!quiet) {
-    console.info(`Downloading file to: ${path}`)
+    console.info(`Downloading file to: ${filename}`)
   }
 
-  var res = await dugg.download(url.href, path, { quiet })
+  var res = await dugg.download(url.href, filename, { quiet })
 
   if (res.downloaded != res.total) {
-    run(`rm ${path}`)
-    throw new Error(`Abort: Downloaded ${res.downloaded} of ${res.total}.`)
+    run(`rm ${filename}`)
+    throw Error(`Abort: Downloaded ${res.downloaded} of ${res.total}.`)
   }
-
-  var filename = path
 
   // Decompress file
   if (type.endsWith('.gz')) {
+    if (!quiet) {
+      console.info('Decompressing data...')
+    }
     try {
-      if (!quiet) {
-        console.info('Decompressing data...')
-      }
-      run(`gzip -d ${path}`)
-      filename = path.slice(0, -3)
+      run(`gzip -d ${filename}`)
+      filename = filename.slice(0, -3)
     } catch (err) {
-      run(`rm ${path}`)
+      run(`rm ${filename}`)
       throw err
     }
   }
