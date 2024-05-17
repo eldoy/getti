@@ -6,8 +6,7 @@ var csvstrom = require('csvstrom')
 var { URL } = require('url')
 var getType = require('./lib/getType.js')
 
-module.exports = async function download(options, callback) {
-  // process input
+module.exports = async function getti(options, callback) {
   if (typeof options != 'object') {
     options = { url: options }
   }
@@ -17,13 +16,13 @@ module.exports = async function download(options, callback) {
   var url = new URL(options.url)
   var type = options.type || getType(url)
 
-  if (!type) throw new TypeError('Undefined file type')
+  if (!type) throw TypeError('Undefined file type')
 
-  if (!['undefined', 'function'].includes(typeof callback)) {
-    throw new TypeError('Callback must be a function')
+  if (callback && typeof callback != 'function') {
+    throw TypeError('Callback must be a function')
   }
 
-  // download file
+  // Download file
   var date = Date.now()
   var path = `${os.tmpdir()}/${date}.${type}`
 
@@ -40,7 +39,7 @@ module.exports = async function download(options, callback) {
 
   var filename = path
 
-  // decompress file
+  // Decompress file
   if (type.endsWith('.gz')) {
     try {
       if (!quiet) {
@@ -54,7 +53,7 @@ module.exports = async function download(options, callback) {
     }
   }
 
-  // convert file to JSON
+  // Convert file to JSON
   if (type.includes('csv')) {
     if (!quiet) {
       console.info(`Converting CSV to JSON...`)
@@ -69,12 +68,12 @@ module.exports = async function download(options, callback) {
     filename = filename.replace(/\.csv$/, '.json')
   }
 
-  // process JSON file
   if (!quiet) {
     console.info('Processing data...')
     console.time('Processed data')
   }
 
+  // Process JSON file
   var data = []
   var count = 0
 
