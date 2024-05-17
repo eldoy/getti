@@ -1,4 +1,4 @@
-# Downloader
+# Getti Downloader
 
 Download, extract and stream files from the Internet.
 
