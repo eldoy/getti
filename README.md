@@ -39,10 +39,10 @@ var json = await getti('http://sample.url/sample.json.gz', (value) => {
 })
 ```
 
-Use a non-returning callback to avoid memory issues for large files.
+Use a non-returning callback to avoid memory issues for large files. Note that `getti` will now return `undefined`, so all data handling must happen inside this callback.
 
 ```js
-var json = await getti('http://sample.url/sample.json.gz', () => {})
+await getti('http://sample.url/sample.json.gz', () => {})
 ```
 
 ### Provide file type:
