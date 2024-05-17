@@ -6,22 +6,36 @@ var csvstrom = require('csvstrom')
 var { URL } = require('url')
 var getType = require('./lib/getType')
 
+var log = {
+  info: function (message) {
+    return message ? console.info(message) : console.info()
+  },
+  time: function (message) {
+    return console.time(message)
+  },
+  timeEnd: function (message) {
+    return console.timeEnd(message)
+  }
+}
+
 function quiet() {
-  console.info = () => {}
-  console.time = () => {}
-  console.timeEnd = () => {}
-  print = () => {}
+  log.info = function () {}
+  log.time = function () {}
+  log.timeEnd = function () {}
+  print = function () {}
   dugg.download = async function (url, path, opts) {
     return require('dugg')().download(url, path, { ...opts, quiet: true })
+  }
+  run = function (cmd, opts) {
+    return require('extras').run(cmd, { ...opts, quiet: true })
   }
 }
 
 async function download(options, callback) {
+  // process input
   if (typeof options != 'object') {
     options = { url: options }
   }
-
-  options.quiet && quiet()
 
   var url = new URL(options.url)
   var type = options.type || getType(url)
@@ -32,9 +46,13 @@ async function download(options, callback) {
     throw new TypeError('Callback must be a function')
   }
 
+  options.quiet && quiet()
+
+  // download file
   var date = Date.now()
   var path = `${os.tmpdir()}/${date}.${type}`
-  console.info(`Downloading file to: ${path}`)
+
+  log.info(`Downloading file to: ${path}`)
 
   var res = await dugg.download(url.href, path, { quiet: options.quiet })
 
@@ -45,9 +63,10 @@ async function download(options, callback) {
 
   var filename = path
 
+  // decompress file
   if (type.endsWith('.gz')) {
     try {
-      console.info('Decompressing data...')
+      log.info('Decompressing data...')
       run(`gzip -d ${path}`)
       filename = path.slice(0, -3)
     } catch (err) {
@@ -56,18 +75,20 @@ async function download(options, callback) {
     }
   }
 
+  // convert file to JSON
   if (type.includes('csv')) {
-    console.info(`Converting CSV to JSON...`)
-    console.time('CSV convert:')
+    log.info(`Converting CSV to JSON...`)
+    log.time('CSV convert:')
     var { count } = await csvstrom(filename)
-    console.timeEnd('CSV convert:')
-    console.info(`Converted ${count} rows of CSV to JSON`)
+    log.timeEnd('CSV convert:')
+    log.info(`Converted ${count} rows of CSV to JSON`)
     run(`rm ${filename}`)
     filename = filename.replace(/\.csv$/, '.json')
   }
 
-  console.info('Processing data...')
-  console.time('Processed data')
+  // process JSON file
+  log.info('Processing data...')
+  log.time('Processed data')
 
   var data = []
   var count = 0
@@ -81,16 +102,13 @@ async function download(options, callback) {
       }
       count++
     })
-  } catch (err) {
+  } finally {
     run(`rm ${filename}`)
-    throw err
   }
 
-  console.info()
-  console.timeEnd('Processed data')
-  console.info(`${count}/${stream.count} entries loaded.`)
-
-  run(`rm ${filename}`)
+  log.info()
+  log.timeEnd('Processed data')
+  log.info(`${count}/${stream.count} entries loaded.`)
 
   if (data.length) return data
 }
