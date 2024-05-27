@@ -74,13 +74,16 @@ module.exports = async function getti(options, callback) {
   // Process JSON file
   var data = []
   var count = 0
+  var stream
 
   try {
-    var stream = await jsonstrom(filename, async function ({ value }) {
-      var result = callback ? callback(value) : value
-      if (typeof result != 'undefined') data.push(result)
-      if (count % 10000 == 0) {
-        !quiet && print(count)
+    stream = await jsonstrom(filename, async function ({ value }) {
+      var result = callback ? await callback(value) : value
+      if (typeof result != 'undefined') {
+        data.push(result)
+      }
+      if (count % 10000 == 0 && !quiet) {
+        print(count)
       }
       count++
     })
