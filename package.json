@@ -1,6 +1,6 @@
 {
   "name": "getti",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Getti downloader",
   "main": "index.js",
   "scripts": {
